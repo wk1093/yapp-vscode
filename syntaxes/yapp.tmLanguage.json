@@ -3,6 +3,9 @@
 	"name": "YA++",
 	"patterns": [
 		{
+			"include": "#testing_macros"
+		},
+		{
 			"include": "#ever_present_context"
 		},
 		{
@@ -91,6 +94,39 @@
 		}
 	],
 	"repository": {
+		"testing_macros": {
+			"!comment": "This is for test case syntax. @test (compile|check) at the beginning of the line.",
+			"match": "(^\\s*(\\@test)\\s+(compile|check)\\s*$)|(^\\s*(\\@c)\\s+(.*)\\s*$)",
+			"captures": {
+				"2": {
+					"name": "markup.bold"
+				},
+				"3": {
+					"name": "entity.name.tag.yapp"
+				},
+				"5": {
+					"name": "markup.bold"
+				},
+				"6": {
+					"patterns": [
+						{
+							"include": "#string_context"
+						},
+						{
+							"include": "#number_literal"
+						},
+						{
+							"include": "#ever_present_context"
+						},
+						{
+							"!comment": "python keywords",
+							"match": "(in|not|and|or|is|if|else|elif|while|for|break|continue|return|yield|try|except|finally|with|as)",
+							"name": "keyword.control.yapp"
+						}
+					]
+				}
+			}
+		},
 		"access_control_keywords": {
 			"match": "((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(((?:(?:protected)|(?:private)|(?:public)))(?:\\s+)?(:))",
 			"captures": {
@@ -215,7 +251,7 @@
 				"3": {
 					"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
 				},
-				"4": {
+				"4test": {
 					"name": "comment.block.yapp"
 				},
 				"5": {
