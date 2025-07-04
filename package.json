@@ -2,7 +2,7 @@
   "name": "yapp-lang",
   "displayName": "Yapp Language Support",
   "description": "YA++ Language Support",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.101.0"
   },

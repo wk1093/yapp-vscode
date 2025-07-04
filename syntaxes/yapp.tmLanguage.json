@@ -3,100 +3,131 @@
 	"name": "YA++",
 	"patterns": [
 		{
-			"include": "#testing_macros"
-		},
-		{
-			"include": "#ever_present_context"
-		},
-		{
-			"include": "#constructor_root"
-		},
-		{
-			"include": "#destructor_root"
-		},
-		{
-			"include": "#function_definition"
-		},
-		{
-			"include": "#operator_overload"
-		},
-		{
-			"include": "#using_namespace"
-		},
-		{
-			"include": "#type_alias"
-		},
-		{
-			"include": "#using_name"
-		},
-		{
-			"include": "#namespace_alias"
-		},
-		{
-			"include": "#namespace_block"
-		},
-		{
-			"include": "#extern_block"
-		},
-		{
-			"include": "#typedef_class"
-		},
-		{
-			"include": "#typedef_struct"
-		},
-		{
-			"include": "#typedef_union"
-		},
-		{
-			"include": "#misc_keywords"
-		},
-		{
-			"include": "#standard_declares"
-		},
-		{
-			"include": "#class_block"
-		},
-		{
-			"include": "#struct_block"
-		},
-		{
-			"include": "#union_block"
-		},
-		{
-			"include": "#enum_block"
-		},
-		{
-			"include": "#template_isolated_definition"
-		},
-		{
-			"include": "#template_definition"
-		},
-		{
-			"include": "#template_explicit_instantiation"
-		},
-		{
-			"include": "#access_control_keywords"
-		},
-		{
-			"include": "#block"
-		},
-		{
-			"include": "#static_assert"
-		},
-		{
-			"include": "#assembly"
-		},
-		{
-			"include": "#function_pointer"
-		},
-		{
-			"include": "#evaluation_context"
+			"include": "#main"
 		}
 	],
 	"repository": {
+		"main": {
+			"patterns": [
+				{
+					"include": "#testing_macros"
+				},
+				{
+					"include": "#pub_preproc"
+				},
+				{
+					"include": "#pub_macro"
+				},
+				{
+					"include": "#pub_pragma"
+				},
+				{
+					"include": "#pub_pragma_mark"
+				},
+				{
+					"include": "#pub_preprocessor_conditional_range"
+				},
+				{
+					"include": "#pub_undef"
+				},
+				{
+					"include": "#pub_preprocessor_conditional_standalone"
+				},
+				{
+					"include": "#import_preproc"
+				},
+				{
+					"include": "#ever_present_context"
+				},
+				{
+					"include": "#constructor_root"
+				},
+				{
+					"include": "#destructor_root"
+				},
+				{
+					"include": "#function_definition"
+				},
+				{
+					"include": "#operator_overload"
+				},
+				{
+					"include": "#using_namespace"
+				},
+				{
+					"include": "#type_alias"
+				},
+				{
+					"include": "#using_name"
+				},
+				{
+					"include": "#namespace_alias"
+				},
+				{
+					"include": "#namespace_block"
+				},
+				{
+					"include": "#extern_block"
+				},
+				{
+					"include": "#typedef_class"
+				},
+				{
+					"include": "#typedef_struct"
+				},
+				{
+					"include": "#typedef_union"
+				},
+				{
+					"include": "#misc_keywords"
+				},
+				{
+					"include": "#standard_declares"
+				},
+				{
+					"include": "#class_block"
+				},
+				{
+					"include": "#struct_block"
+				},
+				{
+					"include": "#union_block"
+				},
+				{
+					"include": "#enum_block"
+				},
+				{
+					"include": "#template_isolated_definition"
+				},
+				{
+					"include": "#template_definition"
+				},
+				{
+					"include": "#template_explicit_instantiation"
+				},
+				{
+					"include": "#access_control_keywords"
+				},
+				{
+					"include": "#block"
+				},
+				{
+					"include": "#static_assert"
+				},
+				{
+					"include": "#assembly"
+				},
+				{
+					"include": "#function_pointer"
+				},
+				{
+					"include": "#evaluation_context"
+				}
+			]
+		},
 		"testing_macros": {
 			"!comment": "This is for test case syntax. @test (compile|check) at the beginning of the line.",
-			"match": "(^\\s*(\\@test)\\s+(compile|check)\\s*$)|(^\\s*(\\@c)\\s+(.*)\\s*$)",
+			"match": "(^\\s*(\\@test)\\s+(compile|check)\\s*$)|(^\\s*(\\@c)\\s+(.*)\\s*$)|(^\\s*(\\@nocompile)\\s*(nowarn)?\\s*$)",
 			"captures": {
 				"2": {
 					"name": "markup.bold"
@@ -124,6 +155,24 @@
 							"name": "keyword.control.yapp"
 						}
 					]
+				},
+				"8": {
+					"name": "markup.bold"
+				},
+				"9": {
+					"name": "entity.name.tag.yapp"
+				}
+			}
+		},
+		"import_preproc": {
+			"!comment": "#import X #import <X> #import \"X\"",
+			"match": "(^\\s*(#import)\\s+(.+)$)",
+			"captures": {
+				"2": {
+					"name": "keyword.control.directive.import.yapp"
+				},
+				"3": {
+					"name": "string.import.yapp"
 				}
 			}
 		},
@@ -5373,8 +5422,191 @@
 			"match": "(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*"
 		},
 		"include": {
-			"match": "^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))((#)(?:\\s+)?((?:include|include_next|import))\\b)(?:\\s+)?(?:(?:(?:((<)[^>]*(>?)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=\\/\\/)))|((\\\")[^\\\"]*(\\\"?)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=\\/\\/))))|(((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?:\\.(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*)*((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=(?:\\/\\/|;)))))|((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=(?:\\/\\/|;))))",
+			"match": "^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))((#)(?:\\s+)?((?:include|include_next))\\b)(?:\\s+)?(?:(?:(?:((<)[^>]*(>?)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=\\/\\/)))|((\\\")[^\\\"]*(\\\"?)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=\\/\\/))))|(((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?:\\.(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*)*((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=(?:\\/\\/|;)))))|((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=(?:\\/\\/|;))))",
 			"captures": {
+				"1": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"2": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"3": {
+					"name": "keyword.control.directive.$5.yapp"
+				},
+				"4": {
+					"name": "punctuation.definition.directive.yapp"
+				},
+				"6": {
+					"name": "string.quoted.other.lt-gt.include.yapp"
+				},
+				"7": {
+					"name": "punctuation.definition.string.begin.yapp"
+				},
+				"8": {
+					"name": "punctuation.definition.string.end.yapp"
+				},
+				"9": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"10": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"11": {
+					"name": "string.quoted.double.include.yapp"
+				},
+				"12": {
+					"name": "punctuation.definition.string.begin.yapp"
+				},
+				"13": {
+					"name": "punctuation.definition.string.end.yapp"
+				},
+				"14": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"15": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"16": {
+					"name": "entity.name.other.preprocessor.macro.include.yapp"
+				},
+				"17": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"18": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"19": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"20": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"21": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"22": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				}
+			},
+			"name": "meta.preprocessor.include.yapp"
+		},
+		"pub_preproc": {
+			"match": "^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))((#pub)(?:\\s+)?((?:include|include_next))\\b)(?:\\s+)?(?:(?:(?:((<)[^>]*(>?)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=\\/\\/)))|((\\\")[^\\\"]*(\\\"?)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=\\/\\/))))|(((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?:\\.(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*)*((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=(?:\\/\\/|;)))))|((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(?:(?:\\n|$)|(?=(?:\\/\\/|;))))",
+						"captures": {
 				"1": {
 					"patterns": [
 						{
@@ -6042,6 +6274,79 @@
 		},
 		"macro": {
 			"begin": "(^((?:(?:(?:\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#)(?:\\s+)?define\\b)(?:\\s+)?((?<!\\w)(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?!\\w))",
+			"end": "(?<!\\\\)(?:(?=\\n)|(?<=^\\n|[^\\\\]\\n)(?=$))",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.directive.define.yapp"
+				},
+				"2": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"3": {
+					"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+				},
+				"4": {
+					"name": "comment.block.yapp"
+				},
+				"5": {
+					"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+				},
+				"6": {
+					"name": "punctuation.definition.directive.yapp"
+				},
+				"7": {
+					"name": "entity.name.function.preprocessor.yapp"
+				}
+			},
+			"endCaptures": {},
+			"name": "meta.preprocessor.macro.yapp",
+			"patterns": [
+				{
+					"match": "\\G(?:\\s+)?(\\()([^\\(]*)(\\))",
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.parameters.begin.preprocessor.yapp"
+						},
+						"2": {
+							"name": "meta.function.preprocessor.parameters.yapp",
+							"patterns": [
+								{
+									"match": "(?<=[(,])(?:\\s+)?((?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*)(?:\\s+)?",
+									"captures": {
+										"1": {
+											"name": "variable.parameter.preprocessor.yapp"
+										}
+									}
+								},
+								{
+									"match": ",",
+									"name": "punctuation.separator.parameters.yapp"
+								},
+								{
+									"match": "\\.\\.\\.",
+									"name": "punctuation.vararg-ellipses.variable.parameter.preprocessor.yapp"
+								}
+							]
+						},
+						"3": {
+							"name": "punctuation.definition.parameters.end.preprocessor.yapp"
+						}
+					}
+				},
+				{
+					"include": "#macro_context"
+				},
+				{
+					"include": "#macro_argument"
+				}
+			]
+		},
+		"pub_macro": {
+			"begin": "(^((?:(?:(?:\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#pub)(?:\\s+)?define\\b)(?:\\s+)?((?<!\\w)(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?!\\w))",
 			"end": "(?<!\\\\)(?:(?=\\n)|(?<=^\\n|[^\\\\]\\n)(?=$))",
 			"beginCaptures": {
 				"1": {
@@ -10497,8 +10802,96 @@
 				}
 			]
 		},
+		"pub_pragma": {
+			"begin": "^((?:(?:(?:\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#pub)(?:\\s+)?pragma\\b",
+			"end": "(?<!\\\\)(?:(?=\\n)|(?<=^\\n|[^\\\\]\\n)(?=$))",
+			"beginCaptures": {
+				"0": {
+					"name": "keyword.control.directive.pragma.yapp"
+				},
+				"1": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"2": {
+					"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+				},
+				"3": {
+					"name": "comment.block.yapp"
+				},
+				"4": {
+					"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+				},
+				"5": {
+					"name": "punctuation.definition.directive.yapp"
+				}
+			},
+			"endCaptures": {},
+			"name": "meta.preprocessor.pragma.yapp",
+			"patterns": [
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#string_context"
+				},
+				{
+					"match": "[a-zA-Z_$][\\w\\-$]*",
+					"name": "entity.other.attribute-name.pragma.preprocessor.yapp"
+				},
+				{
+					"include": "#preprocessor_number_literal"
+				},
+				{
+					"include": "#line_continuation_character"
+				}
+			]
+		},
 		"pragma_mark": {
 			"match": "(^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#)(?:\\s+)?pragma\\s+mark)\\s+(.*)",
+			"captures": {
+				"1": {
+					"name": "keyword.control.directive.pragma.pragma-mark.yapp"
+				},
+				"2": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"3": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"4": {
+					"name": "punctuation.definition.directive.yapp"
+				},
+				"5": {
+					"name": "entity.name.tag.pragma-mark.yapp"
+				}
+			},
+			"name": "meta.preprocessor.pragma.yapp"
+		},
+		"pub_pragma_mark": {
+			"match": "(^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#pub)(?:\\s+)?pragma\\s+mark)\\s+(.*)",
 			"captures": {
 				"1": {
 					"name": "keyword.control.directive.pragma.pragma-mark.yapp"
@@ -10657,8 +11050,78 @@
 				}
 			]
 		},
+		"pub_preprocessor_conditional_range": {
+			"begin": "^((?:(?:(?:\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#pub)(?:\\s+)?((?:(?:ifndef|ifdef)|if))",
+			"end": "(?<!\\\\)(?:(?=\\n)|(?<=^\\n|[^\\\\]\\n)(?=$))",
+			"beginCaptures": {
+				"0": {
+					"name": "keyword.control.directive.conditional.$6.yapp"
+				},
+				"1": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"2": {
+					"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+				},
+				"3": {
+					"name": "comment.block.yapp"
+				},
+				"4": {
+					"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+				},
+				"5": {
+					"name": "punctuation.definition.directive.yapp"
+				},
+				"6": {}
+			},
+			"endCaptures": {},
+			"contentName": "meta.preprocessor.conditional",
+			"patterns": [
+				{
+					"include": "#preprocessor_conditional_context"
+				}
+			]
+		},
 		"preprocessor_conditional_standalone": {
 			"match": "^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#)(?:\\s+)?((?<!\\w)(?:endif|else|elif)(?!\\w))",
+			"captures": {
+				"1": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"2": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"3": {
+					"name": "punctuation.definition.directive.yapp"
+				}
+			},
+			"name": "keyword.control.directive.$4.yapp"
+		},
+		"pub_preprocessor_conditional_standalone": {
+			"match": "^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#pub)(?:\\s+)?((?<!\\w)(?:endif|else|elif)(?!\\w))",
 			"captures": {
 				"1": {
 					"patterns": [
@@ -15970,6 +16433,71 @@
 		},
 		"undef": {
 			"match": "(^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#)(?:\\s+)?undef\\b)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))((?<!\\w)(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?!\\w))",
+			"captures": {
+				"1": {
+					"name": "keyword.control.directive.undef.yapp"
+				},
+				"2": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"3": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"4": {
+					"name": "punctuation.definition.directive.yapp"
+				},
+				"5": {
+					"patterns": [
+						{
+							"include": "#inline_comment"
+						}
+					]
+				},
+				"6": {
+					"patterns": [
+						{
+							"match": "\\s*+(\\/\\*)((?:[^\\*]++|\\*+(?!\\/))*+(\\*\\/))\\s*+",
+							"captures": {
+								"1": {
+									"name": "comment.block.yapp punctuation.definition.comment.begin.yapp"
+								},
+								"2": {
+									"name": "comment.block.yapp"
+								},
+								"3": {
+									"name": "comment.block.yapp punctuation.definition.comment.end.yapp"
+								}
+							}
+						}
+					]
+				},
+				"7": {
+					"name": "entity.name.function.preprocessor.yapp"
+				}
+			},
+			"name": "meta.preprocessor.undef.yapp"
+		},
+		"pub_undef": {
+			"match": "(^((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))(#pub)(?:\\s+)?undef\\b)((?:((?:\\s*+\\/\\*(?:[^\\*]++|\\*+(?!\\/))*+\\*\\/\\s*+)+)|(?:\\s++)|(?<=\\W)|(?=\\W)|^|(?:\\n?$)|\\A|\\Z))((?<!\\w)(?:[a-zA-Z_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))(?:[a-zA-Z0-9_]|(?:\\\\u[0-9a-fA-F]{4}|\\\\U[0-9a-fA-F]{8}))*(?!\\w))",
 			"captures": {
 				"1": {
 					"name": "keyword.control.directive.undef.yapp"

@@ -4,6 +4,10 @@ Adds language support for YAPP (Yet Another Plus Plus language) to Visual Studio
 
 ## Release Notes
 
-### 1.0.0
+### 0.0.1
 
-Initial release
+Base syntax highlighting for YA++.
+
+### 0.0.2
+
+Syntax improvements for custom directives and testing commands.
