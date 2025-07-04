@@ -127,7 +127,7 @@
 		},
 		"testing_macros": {
 			"!comment": "This is for test case syntax. @test (compile|check) at the beginning of the line.",
-			"match": "(^\\s*(\\@test)\\s+(compile|check)\\s*$)|(^\\s*(\\@c)\\s+(.*)\\s*$)|(^\\s*(\\@nocompile)\\s*(nowarn)?\\s*$)",
+			"match": "(^\\s*(\\@test)\\s+([a-zA-Z]+)\\s*$)|(^\\s*(\\@c)\\s+(.*)\\s*$)|(^\\s*(\\@nocompile)\\s*(nowarn)?\\s*$)",
 			"captures": {
 				"2": {
 					"name": "markup.bold"
